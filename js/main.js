@@ -1,17 +1,17 @@
-function getRandomFromRange (min, max) {
-  if (min < max) {
+function getRandomIntegerFromRange (min, max) {
+  if (min < max && min >= 0) {
     return Math.round(Math.random() * (max - min) + min);
   }
-  return('Неверно указан диапазон: min, max');
+  return (`Неверно указан диапазон от ${  min  } до ${  max}`);
 }
-getRandomFromRange(0, 20);
+getRandomIntegerFromRange(0, 20);
 
-function getRandomWithComma (min, max, signsAfterComma) {
+function getRandomFloatNumber (min, max, digits) {
   if (min < max && min >= 0) {
-    const RANDOMNUMBER = Math.random() * (max - min) + min;
-    return RANDOMNUMBER.toFixed(signsAfterComma);
+    const randomNumber = Math.random() * (max - min) + min;
+    return randomNumber.toFixed(digits);
   }
-  return('Неверно указан диапазон: min, max');
+  return (`Неверно указан диапазон от ${  min  } до ${  max}`);
 }
 
-getRandomWithComma(0, 20, 2);
+getRandomFloatNumber(0, 20, 2);
