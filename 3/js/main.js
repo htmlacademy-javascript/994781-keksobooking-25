@@ -82,3 +82,7 @@ const createOffer = (value, index) => {
 };
 
 const similarOffer = Array.from({length: SIMILAR_OFFER_COUNT}, createOffer);
+
+//Временное решение, для задействовать переменную
+const someFunc = () => similarOffer;
+someFunc();
