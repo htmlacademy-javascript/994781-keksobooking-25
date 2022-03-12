@@ -1,31 +1,28 @@
 import {similarOffers} from './data.js';
 
-const similarListElement = document.querySelector('#map-canvas');
+const mapElement = document.querySelector('#map-canvas');
 const similarOfferTemplate = document.querySelector('#card').content.querySelector('.popup');
-const similarListFragment = document.createDocumentFragment();
 
-similarOffers.forEach(({author, offer}) => {
-
+const createOfferElement = ({author, offer}) => {
   const offerElement = similarOfferTemplate.cloneNode(true);
-  //если заголовок и цена за ночь обязательные поля, то их можно не проверять на "наличие"?
-  if(offer.title){
+  if (offer.title) {
     offerElement.querySelector('.popup__title').textContent = offer.title;
   } else {
     offerElement.querySelector('.popup__title').remove();
   }
-  if(offer.address){
+  if (offer.address) {
     offerElement.querySelector('.popup__text--address').textContent = offer.address;
   } else {
     offerElement.querySelector('.popup__text--address').remove();
   }
-  if(offer.price){
+  if (offer.price) {
     offerElement.querySelector('.popup__text--price').textContent = `${offer.price} ₽/ночь.`;
   } else {
     offerElement.querySelector('.popup__text--price').remove();
   }
   const createPopupType = () => {
     const nameOfType = {flat: 'Квартира', bungalow: 'Бунгало', house: 'Дом', palace: 'Дворец', hotel: 'Отель'};
-    if(offer.type){
+    if (offer.type) {
       offerElement.querySelector('.popup__type').textContent = nameOfType[offer.type];
     } else {
       offerElement.querySelector('.popup__type').remove();
@@ -33,12 +30,12 @@ similarOffers.forEach(({author, offer}) => {
   };
   createPopupType();
 
-  if(offer.rooms && offer.guests){
+  if (offer.rooms && offer.guests) {
     offerElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей.`;
   } else {
     offerElement.querySelector('.popup__text--capacity').remove();
   }
-  if(offer.checkin && offer.checkout){
+  if (offer.checkin && offer.checkout){
     offerElement.querySelector('.popup__text--time').textContent = `Заезд после ${offer.checkin}, выезд до ${offer.checkout}.`;
   } else {
     offerElement.querySelector('.popup__text--time').remove();
@@ -85,8 +82,7 @@ similarOffers.forEach(({author, offer}) => {
     popupPhotoContainer.append(popupPhotoFragment);
   };
   createPopupPhotos();
+  return offerElement;
+};
 
-  similarListFragment.appendChild(offerElement);
-});
-
-similarListElement.appendChild(similarListFragment);
+mapElement.appendChild(createOfferElement(similarOffers[5]));
