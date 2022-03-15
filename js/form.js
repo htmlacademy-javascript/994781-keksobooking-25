@@ -31,3 +31,36 @@ const createActivePage = () => {
   mapFeaturesElements.removeAttribute('disabled', 'disabled');
 };
 createActivePage();
+
+//Валидация формы
+
+const pristine = new Pristine(mainForm, {
+  classTo: 'ad-form__element',
+  errorTextParent: 'ad-form__element',
+  errorTextClass: 'ad-form__error',
+});
+
+const roomsField = mainForm.querySelector('[name="rooms"]');
+const capacityField = mainForm.querySelector('[name="capacity"]');
+const roomsOption = {
+  '1': ['1'],
+  '2': ['2', '1'],
+  '3': ['3', '2', '1'],
+  '100': ['0'],
+};
+
+function validateСapacity () {
+  return roomsOption[roomsField.value].includes(capacityField.value);
+}
+
+function getСapacityErrorMessage () {
+  return 'Значение не подходит для выбранного количчества комнат';
+}
+
+pristine.addValidator(capacityField, validateСapacity, getСapacityErrorMessage);
+
+
+mainForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  pristine.validate();
+});

@@ -520,6 +520,11 @@ fieldset {
   padding-top: 10px;
 }
 
+.ad-form__error {
+  top: 34px;
+  left: 20px;
+  color: #ff0000;
+}
 .ad-form__photo-container {
   display: -webkit-box;
   display: -ms-flexbox;
