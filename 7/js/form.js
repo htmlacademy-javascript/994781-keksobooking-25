@@ -32,6 +32,9 @@ const createActivePage = () => {
 };
 createActivePage();
 
+//добавление временного значения адреса
+mainForm.querySelector('[name="address"]').value = 1442456;
+
 //Валидация формы
 
 const pristine = new Pristine(mainForm, {
@@ -61,6 +64,8 @@ pristine.addValidator(capacityField, validateСapacity, getСapacityErrorMessage
 
 
 mainForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+  const isValid = pristine.validate();
+  if (!isValid) {
+    evt.preventDefault();
+  }
 });
