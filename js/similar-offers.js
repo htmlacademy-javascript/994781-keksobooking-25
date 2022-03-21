@@ -85,4 +85,6 @@ const createOfferElement = ({author, offer}) => {
   return offerElement;
 };
 
-mapElement.appendChild(createOfferElement(similarOffers[5]));
+// mapElement.appendChild(createOfferElement(similarOffers[5]));
+
+export {createOfferElement};
