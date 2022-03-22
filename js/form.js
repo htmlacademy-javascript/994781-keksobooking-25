@@ -1,8 +1,5 @@
 const mainForm = document.querySelector('.ad-form');
 
-//добавление временного значения адреса
-mainForm.querySelector('[name="address"]').value = 1442456;
-
 // Валидация формы
 
 const pristine = new Pristine(mainForm, {
@@ -41,6 +38,7 @@ const typeOption = {
   'house': 5000,
   'palace': 10000,
 };
+
 //записываю актуальное значение placeholder с ценой
 priceField.placeholder = typeOption[typeField.value];
 
@@ -56,6 +54,39 @@ function getPriceFieldErrorMessage () {
   return `Для выбранного типа жилья минимальная цена ${typeOption[typeField.value]} руб.`;
 }
 pristine.addValidator(priceField, validatePriceField, getPriceFieldErrorMessage);
+
+//слайдер для формы цены
+const sliderPriceElement = document.querySelector('.ad-form__slider');
+
+noUiSlider.create(sliderPriceElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: typeOption[typeField.value],
+  step: 1,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+});
+sliderPriceElement.noUiSlider.on('update', () => {
+  priceField.value = sliderPriceElement.noUiSlider.get();
+});
+
+priceField.addEventListener('change', () => {
+  sliderPriceElement.noUiSlider.updateOptions({
+    start: priceField.value,
+  });
+});
+//тз: Обратите внимание, вместе с минимальным значением цены нужно изменять и плейсхолдер.
+//сейчас плейсхолдер не отображается, так как перекрывается стартовым значением слайдера.
+
 
 // Валидация поля заезда/выезда
 const timeInField = mainForm.querySelector('[name="timein"]');

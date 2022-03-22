@@ -26,8 +26,6 @@ L.tileLayer(
 const centerMarker = map.getCenter();
 markerAddress.value = `${centerMarker.lat.toFixed(5)}, ${centerMarker.lng.toFixed(5)}`;
 
-
-
 // Создаем точку на карте для передвижения
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
@@ -95,6 +93,7 @@ mainPinMarker.on('moveend', (evt) => {
   markerAddress.value = `${markerLatLng.lat.toFixed(5)}, ${markerLatLng.lng.toFixed(5)}`;
 });
 
+const MARKER_LAT_LNG  = '35.68172, 139.75392';
 resetButton.addEventListener('click', () => {
   mainPinMarker.setLatLng({
     lat: 35.68172,
@@ -104,6 +103,10 @@ resetButton.addEventListener('click', () => {
     lat: 35.68172,
     lng: 139.75392,
   }, 12);
+  //после сброса в форме не отображаются координаты
+  markerAddress.value = MARKER_LAT_LNG;
+  console.log(markerAddress.value);
 });
-//после сброса в форме не отображается 
+
+
 export {centerMarker};
