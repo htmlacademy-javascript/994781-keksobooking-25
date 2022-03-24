@@ -1,39 +1,6 @@
-const mainForm = document.querySelector('.ad-form');
-const mainFormElements = mainForm.querySelectorAll('fieldset');
-const mapFilters = document.querySelector('.map__filters');
-const mapFiltersElements = mapFilters.querySelectorAll('.map__filter');
-const mapFeaturesElements = mapFilters.querySelector('.map__features');
+import {mainForm} from './page.js';
 
-const deactivatePage = () => {
-  mainForm.classList.add('ad-form--disabled');
-  mainFormElements.forEach((element) => {
-    element.setAttribute('disabled', 'disabled');
-  });
-
-  mapFilters.classList.add('ad-form--disabled');
-  mapFiltersElements.forEach((element) => {
-    element.setAttribute('disabled', 'disabled');
-  });
-  mapFeaturesElements.setAttribute('disabled', 'disabled');
-};
-deactivatePage();
-
-const activatePage = () => {
-  mainForm.classList.remove('ad-form--disabled');
-  mainFormElements.forEach((element) => {
-    element.removeAttribute('disabled', 'disabled');
-  });
-
-  mapFilters.classList.remove('ad-form--disabled');
-  mapFiltersElements.forEach((element) => {
-    element.removeAttribute('disabled', 'disabled');
-  });
-  mapFeaturesElements.removeAttribute('disabled', 'disabled');
-};
-activatePage();
-
-//добавление временного значения адреса
-mainForm.querySelector('[name="address"]').value = 1442456;
+const resetButton = document.querySelector('.ad-form__reset');
 
 // Валидация формы
 
@@ -41,7 +8,7 @@ const pristine = new Pristine(mainForm, {
   classTo: 'ad-form__element',
   errorTextParent: 'ad-form__element',
   errorTextClass: 'ad-form__error',
-});
+}, false);
 
 // Валидация начений "Количество комнат", "Количество гостей"
 const roomsField = mainForm.querySelector('[name="rooms"]');
@@ -53,15 +20,15 @@ const roomsOption = {
   '100': ['0'],
 };
 
-function validateСapacity () {
+function validateCapacity () {
   return roomsOption[roomsField.value].includes(capacityField.value);
 }
 
-function getСapacityErrorMessage () {
+function getCapacityErrorMessage () {
   return 'Значение не подходит для выбранного количества комнат';
 }
 
-pristine.addValidator(capacityField, validateСapacity, getСapacityErrorMessage);
+pristine.addValidator(capacityField, validateCapacity, getCapacityErrorMessage);
 
 //Валидация цены в зависимости от типа жилья
 const typeField = mainForm.querySelector('[name="type"]');
@@ -73,8 +40,6 @@ const typeOption = {
   'house': 5000,
   'palace': 10000,
 };
-//записываю актуальное значение placeholder с ценой
-priceField.placeholder = typeOption[typeField.value];
 
 typeField.addEventListener('change', () => {
   priceField.placeholder = typeOption[typeField.value];
@@ -88,6 +53,36 @@ function getPriceFieldErrorMessage () {
   return `Для выбранного типа жилья минимальная цена ${typeOption[typeField.value]} руб.`;
 }
 pristine.addValidator(priceField, validatePriceField, getPriceFieldErrorMessage);
+
+//слайдер для формы цены
+const sliderPriceElement = document.querySelector('.ad-form__slider');
+
+noUiSlider.create(sliderPriceElement, {
+  range: {
+    min: 0,
+    max: 100000,
+  },
+  start: typeOption[typeField.value],
+  step: 100,
+  connect: 'lower',
+  format: {
+    to: function (value) {
+      return value.toFixed(0);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
+});
+sliderPriceElement.noUiSlider.on('slide', () => {
+  priceField.value = sliderPriceElement.noUiSlider.get();
+});
+
+priceField.addEventListener('change', () => {
+  sliderPriceElement.noUiSlider.updateOptions({
+    start: priceField.value,
+  });
+});
 
 // Валидация поля заезда/выезда
 const timeInField = mainForm.querySelector('[name="timein"]');
@@ -106,3 +101,9 @@ mainForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
   }
 });
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  mainForm.reset();
+});
+
+export {resetButton};
