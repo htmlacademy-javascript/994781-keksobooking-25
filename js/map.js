@@ -1,5 +1,4 @@
-import {activatePage} from './page-activator.js';
-import {mainForm} from './form.js';
+import {activatePage, mainForm} from './page.js';
 import {similarOffers} from './data.js';
 import {createOfferElement} from './similar-offers.js';
 

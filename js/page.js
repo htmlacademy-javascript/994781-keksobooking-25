@@ -1,5 +1,4 @@
-import {mainForm} from './form.js';
-
+const mainForm = document.querySelector('.ad-form');
 const mainFormElements = mainForm.querySelectorAll('fieldset');
 const mapFilters = document.querySelector('.map__filters');
 const mapFiltersElements = mapFilters.querySelectorAll('.map__filter');
@@ -33,4 +32,4 @@ const activatePage = () => {
   mapFeaturesElements.removeAttribute('disabled', 'disabled');
 };
 
-export {activatePage};
+export {activatePage, mainForm};
