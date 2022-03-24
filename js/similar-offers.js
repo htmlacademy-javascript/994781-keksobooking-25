@@ -1,6 +1,5 @@
-import {similarOffers} from './data.js';
+// import {similarOffers} from './data.js';
 
-const mapElement = document.querySelector('#map-canvas');
 const similarOfferTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const createOfferElement = ({author, offer}) => {
