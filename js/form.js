@@ -1,6 +1,6 @@
 import {mainForm} from './page.js';
 
-const resetForm = document.querySelector('.ad-form__reset');
+const resetButton = document.querySelector('.ad-form__reset');
 
 // Валидация формы
 
@@ -101,7 +101,9 @@ mainForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
   }
 });
-resetForm.addEventListener('click', (evt) => {
+resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   mainForm.reset();
 });
+
+export {resetButton};

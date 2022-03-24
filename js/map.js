@@ -1,8 +1,8 @@
 import {activatePage, mainForm} from './page.js';
 import {similarOffers} from './data.js';
 import {createOfferElement} from './similar-offers.js';
+import {resetButton} from './form.js';
 
-const resetButton = document.querySelector('.ad-form__reset');
 const markerAddress = mainForm.querySelector('[name="address"]');
 
 
@@ -102,7 +102,6 @@ resetButton.addEventListener('click', () => {
     lat: 35.68172,
     lng: 139.75392,
   }, 12);
-  //после сброса в форме не отображаются координаты
   markerAddress.value = MARKER_LAT_LNG;
 });
 
