@@ -104,7 +104,6 @@ resetButton.addEventListener('click', () => {
   }, 12);
   //после сброса в форме не отображаются координаты
   markerAddress.value = MARKER_LAT_LNG;
-  console.log(markerAddress.value);
 });
 
 
