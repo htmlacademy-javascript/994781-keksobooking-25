@@ -1,4 +1,6 @@
-const mainForm = document.querySelector('.ad-form');
+import {mainForm} from './page.js';
+
+const resetForm = document.querySelector('.ad-form__reset');
 
 // Валидация формы
 
@@ -18,15 +20,15 @@ const roomsOption = {
   '100': ['0'],
 };
 
-function validateСapacity () {
+function validateCapacity () {
   return roomsOption[roomsField.value].includes(capacityField.value);
 }
 
-function getСapacityErrorMessage () {
+function getCapacityErrorMessage () {
   return 'Значение не подходит для выбранного количества комнат';
 }
 
-pristine.addValidator(capacityField, validateСapacity, getСapacityErrorMessage);
+pristine.addValidator(capacityField, validateCapacity, getCapacityErrorMessage);
 
 //Валидация цены в зависимости от типа жилья
 const typeField = mainForm.querySelector('[name="type"]');
@@ -38,9 +40,6 @@ const typeOption = {
   'house': 5000,
   'palace': 10000,
 };
-
-//записываю актуальное значение placeholder с ценой
-priceField.placeholder = typeOption[typeField.value];
 
 typeField.addEventListener('change', () => {
   priceField.placeholder = typeOption[typeField.value];
@@ -64,7 +63,7 @@ noUiSlider.create(sliderPriceElement, {
     max: 100000,
   },
   start: typeOption[typeField.value],
-  step: 1,
+  step: 100,
   connect: 'lower',
   format: {
     to: function (value) {
@@ -75,7 +74,7 @@ noUiSlider.create(sliderPriceElement, {
     },
   },
 });
-sliderPriceElement.noUiSlider.on('update', () => {
+sliderPriceElement.noUiSlider.on('slide', () => {
   priceField.value = sliderPriceElement.noUiSlider.get();
 });
 
@@ -84,9 +83,6 @@ priceField.addEventListener('change', () => {
     start: priceField.value,
   });
 });
-//тз: Обратите внимание, вместе с минимальным значением цены нужно изменять и плейсхолдер.
-//сейчас плейсхолдер не отображается, так как перекрывается стартовым значением слайдера.
-
 
 // Валидация поля заезда/выезда
 const timeInField = mainForm.querySelector('[name="timein"]');
@@ -105,5 +101,7 @@ mainForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
   }
 });
-
-export {mainForm};
+resetForm.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  mainForm.reset();
+});

@@ -1,5 +1,4 @@
-import {activatePage} from './page-activator.js';
-import {mainForm} from './form.js';
+import {activatePage, mainForm} from './page.js';
 import {similarOffers} from './data.js';
 import {createOfferElement} from './similar-offers.js';
 
@@ -105,7 +104,6 @@ resetButton.addEventListener('click', () => {
   }, 12);
   //после сброса в форме не отображаются координаты
   markerAddress.value = MARKER_LAT_LNG;
-  console.log(markerAddress.value);
 });
 
 
