@@ -1,9 +1,9 @@
 import {mainForm} from './page.js';
 
 const resetButton = document.querySelector('.ad-form__reset');
+const mapFilter = document.querySelector('.map__filters');
 
 // Валидация формы
-
 const pristine = new Pristine(mainForm, {
   classTo: 'ad-form__element',
   errorTextParent: 'ad-form__element',
@@ -101,9 +101,12 @@ mainForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
   }
 });
+
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   mainForm.reset();
+  mapFilter.reset();
+  sliderPriceElement.noUiSlider.reset();
 });
 
 export {resetButton};

@@ -103,6 +103,7 @@ resetButton.addEventListener('click', () => {
     lng: 139.75392,
   }, 12);
   markerAddress.value = MARKER_LAT_LNG;
+  map.closePopup();
 });
 
 

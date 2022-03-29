@@ -43,18 +43,20 @@ const createOfferElement = ({author, offer}) => {
   const createFeaturesList = () => {
     const featuresContainer = offerElement.querySelector('.popup__features');
     const featuresListFragment= document.createDocumentFragment();
-    offer.features.forEach((offerFeatures) => {
-      const featureListItem = featuresContainer.querySelector(`.popup__feature--${offerFeatures}`);
-      if (featureListItem) {
-        featuresListFragment.append(featureListItem);
-      }
-    });
-    featuresContainer.innerHTML = '';
-    featuresContainer.append(featuresListFragment);
+    if (offer.features) {
+      offer.features.forEach((offerFeatures) => {
+        const featureListItem = featuresContainer.querySelector(`.popup__feature--${offerFeatures}`);
+        if (featureListItem) {
+          featuresListFragment.append(featureListItem);
+        }
+      });
+      featuresContainer.innerHTML = '';
+      featuresContainer.append(featuresListFragment);
+    }
   };
   createFeaturesList();
 
-  if(offer.description){
+  if (offer.description){
     offerElement.querySelector('.popup__description').textContent = offer.description;
   } else {
     offerElement.querySelector('.popup__description').remove();
@@ -68,17 +70,18 @@ const createOfferElement = ({author, offer}) => {
   const createPopupPhotos = () => {
     const popupPhotoContainer = offerElement.querySelector('.popup__photos');
     const popupPhotoFragment= document.createDocumentFragment();
-
-    offer.photos.forEach((offerPhotos) => {
-      const offerContainer = popupPhotoContainer.cloneNode(true);
-      offerContainer.querySelector('.popup__photo').src = offerPhotos;
-      const popupPhotoItem = offerContainer.querySelector('.popup__photo');
-      if (offer.photos) {
-        popupPhotoFragment.append(popupPhotoItem);
-      }
-    });
-    popupPhotoContainer.innerHTML = '';
-    popupPhotoContainer.append(popupPhotoFragment);
+    if(offer.photos) {
+      offer.photos.forEach((offerPhotos) => {
+        const offerContainer = popupPhotoContainer.cloneNode(true);
+        offerContainer.querySelector('.popup__photo').src = offerPhotos;
+        const popupPhotoItem = offerContainer.querySelector('.popup__photo');
+        if (offer.photos) {
+          popupPhotoFragment.append(popupPhotoItem);
+        }
+      });
+      popupPhotoContainer.innerHTML = '';
+      popupPhotoContainer.append(popupPhotoFragment);
+    }
   };
   createPopupPhotos();
   return offerElement;
