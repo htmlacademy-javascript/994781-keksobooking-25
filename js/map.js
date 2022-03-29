@@ -1,7 +1,7 @@
 import {activatePage, mainForm} from './page.js';
-import {similarOffers} from './data.js';
-import {createOfferElement} from './similar-offers.js';
+import {createOfferElement} from './offer-card.js';
 import {resetButton} from './form.js';
+import {getData} from './api.js';
 
 const markerAddress = mainForm.querySelector('[name="address"]');
 
@@ -52,37 +52,26 @@ const simplePinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const getCardsOffers = () => {
-  const points = [];
-  for (let i = 0; i <= similarOffers.length - 1; i++) {
-    points[i] = similarOffers[i].offer.location;
-    points[i].popup = createOfferElement(similarOffers[i]);
-  }
-  return points;
-};
-
-const pointsOfOffers = getCardsOffers();
-
 const markerGroup = L.layerGroup().addTo(map);
 
 const createMarker = (point) => {
-  const {lat, lng, popup} = point;
-  const marker = L.marker({
-    lat,
-    lng,
-  },
-  {
-    icon: simplePinIcon,
-  },);
-
-  marker.addTo(markerGroup)
-    .bindPopup(popup);
-
-  return marker;
+  point.forEach((ad) => {
+    const {location} = ad;
+    const marker = L.marker({
+      lat: location.lat,
+      lng: location.lng
+    },
+    {
+      icon: simplePinIcon
+    });
+    marker.addTo(markerGroup)
+      .bindPopup(createOfferElement(ad));
+    return marker;
+  });
 };
 
-pointsOfOffers.forEach((point) => {
-  createMarker(point);
+getData((ads) => {
+  createMarker(ads);
 });
 
 // markerGroup.clearLayers();
@@ -105,6 +94,3 @@ resetButton.addEventListener('click', () => {
   markerAddress.value = MARKER_LAT_LNG;
   map.closePopup();
 });
-
-
-export {centerMarker};

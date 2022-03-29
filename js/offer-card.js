@@ -1,5 +1,3 @@
-// import {similarOffers} from './data.js';
-
 const similarOfferTemplate = document.querySelector('#card').content.querySelector('.popup');
 
 const createOfferElement = ({author, offer}) => {
@@ -52,6 +50,8 @@ const createOfferElement = ({author, offer}) => {
       });
       featuresContainer.innerHTML = '';
       featuresContainer.append(featuresListFragment);
+    } else {
+      featuresContainer.remove();
     }
   };
   createFeaturesList();
@@ -81,12 +81,12 @@ const createOfferElement = ({author, offer}) => {
       });
       popupPhotoContainer.innerHTML = '';
       popupPhotoContainer.append(popupPhotoFragment);
+    } else {
+      popupPhotoContainer.remove();
     }
   };
   createPopupPhotos();
   return offerElement;
 };
-
-// mapElement.appendChild(createOfferElement(similarOffers[5]));
 
 export {createOfferElement};
