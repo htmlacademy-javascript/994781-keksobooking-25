@@ -28,4 +28,33 @@ const getRandomArray = (array) => {
   return newArray;
 };
 
-export {getRandomIntegerFromRange, getRandomFloatNumber, getRandomArrayElement, getRandomArray};
+const errorPopup = document.querySelector('#error').content.querySelector('.error');
+const popup = errorPopup.cloneNode(true);
+const isEscapeKey = (evt) => evt.key === 'Escape';
+
+
+// const isEnterKey = (evt) => evt.key === 'Enter';
+
+const onPopupEscKeydown = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeUserModal();
+  }
+};
+
+function closeUserModal () {
+  popup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscKeydown);
+}
+
+const createErrorMessage = (message) => {
+  popup.querySelector('.error__message').textContent = message;
+  popup.querySelector('.error__button').textContent = 'ХОРОШО';
+  popup.querySelector('.error__button').addEventListener('click', () => {
+    popup.classList.add('hidden');
+  });
+  document.addEventListener('keydown', onPopupEscKeydown);
+  document.body.append(popup);
+};
+
+export {getRandomIntegerFromRange, getRandomFloatNumber, getRandomArrayElement, getRandomArray, createErrorMessage};

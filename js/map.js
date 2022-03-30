@@ -54,8 +54,8 @@ const simplePinIcon = L.icon({
 
 const markerGroup = L.layerGroup().addTo(map);
 
-const createMarker = (point) => {
-  point.forEach((ad) => {
+const createMarker = (points) => {
+  points.forEach((ad) => {
     const {location} = ad;
     const marker = L.marker({
       lat: location.lat,
