@@ -1,6 +1,6 @@
 import {activatePage, mainForm} from './page.js';
 import {createOfferElement} from './offer-card.js';
-import {resetButton} from './form.js';
+import {resetButton, submitButton} from './form.js';
 import {getData} from './api.js';
 
 const markerAddress = mainForm.querySelector('[name="address"]');
@@ -82,15 +82,20 @@ mainPinMarker.on('moveend', (evt) => {
 });
 
 const MARKER_LAT_LNG  = '35.68172, 139.75392';
-resetButton.addEventListener('click', () => {
-  mainPinMarker.setLatLng({
-    lat: 35.68172,
-    lng: 139.75392,
+
+const resetPoint = (button) => {
+  button.addEventListener('click', () => {
+    mainPinMarker.setLatLng({
+      lat: 35.68172,
+      lng: 139.75392,
+    });
+    map.setView({
+      lat: 35.68172,
+      lng: 139.75392,
+    }, 12);
+    markerAddress.value = MARKER_LAT_LNG;
+    map.closePopup();
   });
-  map.setView({
-    lat: 35.68172,
-    lng: 139.75392,
-  }, 12);
-  markerAddress.value = MARKER_LAT_LNG;
-  map.closePopup();
-});
+};
+resetPoint(submitButton);
+resetPoint(resetButton);

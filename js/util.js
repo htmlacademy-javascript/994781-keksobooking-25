@@ -1,3 +1,5 @@
+const SUCCESS_POPUP_SHOW_TIME = 3000;
+
 const getRandomIntegerFromRange = (min, max) => {
   if (min < max && min >= 0) {
     return Math.round(Math.random() * (max - min) + min);
@@ -28,33 +30,60 @@ const getRandomArray = (array) => {
   return newArray;
 };
 
-const errorPopup = document.querySelector('#error').content.querySelector('.error');
-const popup = errorPopup.cloneNode(true);
+const errorElement = document.querySelector('#error').content.querySelector('.error');
+const errorPopup = errorElement.cloneNode(true);
+const successElement = document.querySelector('#success').content.querySelector('.success');
+const successPopup = successElement.cloneNode(true);
+
+
+// не разобралась как сделать универсальный закрыватель попапов, сделала два для каждого
 const isEscapeKey = (evt) => evt.key === 'Escape';
-
-
 // const isEnterKey = (evt) => evt.key === 'Enter';
 
-const onPopupEscKeydown = (evt) => {
+const onPopupEscKeydownError = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeUserModal();
+    closeErrorModal();
   }
 };
 
-function closeUserModal () {
-  popup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscKeydown);
+function closeErrorModal () {
+  errorPopup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscKeydownError);
 }
 
-const createErrorMessage = (message) => {
-  popup.querySelector('.error__message').textContent = message;
-  popup.querySelector('.error__button').textContent = 'ХОРОШО';
-  popup.querySelector('.error__button').addEventListener('click', () => {
-    popup.classList.add('hidden');
-  });
-  document.addEventListener('keydown', onPopupEscKeydown);
-  document.body.append(popup);
+const onPopupEscKeydownSuccess = (evt) => {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeSuccessModal();
+  }
 };
 
-export {getRandomIntegerFromRange, getRandomFloatNumber, getRandomArrayElement, getRandomArray, createErrorMessage};
+function closeSuccessModal () {
+  successPopup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupEscKeydownSuccess);
+}
+//end
+
+const createErrorMessage = (message) => {
+  errorPopup.querySelector('.error__message').textContent = message;
+  errorPopup.querySelector('.error__button').textContent = 'ХОРОШО';
+  document.addEventListener('click', () => {
+    errorPopup.classList.add('hidden');
+  });
+  document.addEventListener('keydown', onPopupEscKeydownError);
+  document.body.append(errorPopup);
+};
+
+const createSuccessMessage = () => {
+  document.addEventListener('click', () => {
+    successPopup.classList.add('hidden');
+  });
+  document.addEventListener('keydown', onPopupEscKeydownSuccess);
+  document.body.append(successPopup);
+  setTimeout(() => {
+    successPopup.classList.add('hidden');
+  }, SUCCESS_POPUP_SHOW_TIME);
+};
+
+export {getRandomIntegerFromRange, getRandomFloatNumber, getRandomArrayElement, getRandomArray, createErrorMessage, createSuccessMessage};
