@@ -1,7 +1,10 @@
 import {mainForm} from './page.js';
+import {sendData} from './api.js';
+import {createErrorMessage, createSuccessMessage} from './util.js';
 
 const resetButton = document.querySelector('.ad-form__reset');
 const mapFilter = document.querySelector('.map__filters');
+const submitButton = document.querySelector('.ad-form__submit');
 
 // Валидация формы
 const pristine = new Pristine(mainForm, {
@@ -95,18 +98,54 @@ timeOutField.addEventListener('change', () => {
   timeInField.value = timeOutField.value;
 });
 
-mainForm.addEventListener('submit', (evt) => {
-  const isValid = pristine.validate();
-  if (!isValid) {
-    evt.preventDefault();
-  }
-});
-
-resetButton.addEventListener('click', (evt) => {
-  evt.preventDefault();
+//сброс формы
+const resetForm = () => {
   mainForm.reset();
   mapFilter.reset();
   sliderPriceElement.noUiSlider.reset();
+  //как сбросить сообщения валидатора?
+};
+
+//Отправка формы
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  mainForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          unblockSubmitButton();
+          createSuccessMessage();
+        },
+        () => {
+          createErrorMessage('Не удалось отправить форму. Попробуйте ещё раз');
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+      unblockSubmitButton();
+    }
+  });
+};
+
+setUserFormSubmit(resetForm);
+
+resetButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  resetForm();
 });
 
-export {resetButton};
+export {resetButton, submitButton};
