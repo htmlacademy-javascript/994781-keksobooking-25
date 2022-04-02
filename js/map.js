@@ -1,7 +1,11 @@
 import {activatePage, mainForm} from './page.js';
-import {createOfferElement} from './offer-card.js';
-import {resetButton, submitButton} from './form.js';
+import {createCard} from './add-card.js';
 import {getData} from './api.js';
+
+const MarkerLocation = {
+  LAT: 35.68172,
+  LNG: 139.75392,
+};
 
 const markerAddress = mainForm.querySelector('[name="address"]');
 
@@ -54,24 +58,24 @@ const simplePinIcon = L.icon({
 
 const markerGroup = L.layerGroup().addTo(map);
 
-const createMarker = (points) => {
-  points.forEach((ad) => {
-    const {location} = ad;
-    const marker = L.marker({
-      lat: location.lat,
-      lng: location.lng
-    },
-    {
-      icon: simplePinIcon
-    });
-    marker.addTo(markerGroup)
-      .bindPopup(createOfferElement(ad));
-    return marker;
+const createMarker = (ad) => {
+  const {location} = ad;
+  const marker = L.marker({
+    lat: location.lat,
+    lng: location.lng
+  },
+  {
+    icon: simplePinIcon
   });
+  marker.addTo(markerGroup)
+    .bindPopup(createCard(ad));
+  return marker;
 };
 
 getData((ads) => {
-  createMarker(ads);
+  ads.forEach((ad) => {
+    createMarker(ad);
+  });
 });
 
 // markerGroup.clearLayers();
@@ -81,21 +85,18 @@ mainPinMarker.on('moveend', (evt) => {
   markerAddress.value = `${markerLatLng.lat.toFixed(5)}, ${markerLatLng.lng.toFixed(5)}`;
 });
 
-const MARKER_LAT_LNG  = '35.68172, 139.75392';
-
-const resetPoint = (button) => {
-  button.addEventListener('click', () => {
-    mainPinMarker.setLatLng({
-      lat: 35.68172,
-      lng: 139.75392,
-    });
-    map.setView({
-      lat: 35.68172,
-      lng: 139.75392,
-    }, 12);
-    markerAddress.value = MARKER_LAT_LNG;
-    map.closePopup();
+const resetPoint = () => {
+  const {LAT, LNG} = MarkerLocation;
+  mainPinMarker.setLatLng({
+    lat: LAT,
+    lng: LNG,
   });
+  map.setView({
+    lat: LAT,
+    lng: LNG,
+  }, 12);
+  markerAddress.value = `${LAT}, ${LNG}`;
+  map.closePopup();
 };
-resetPoint(submitButton);
-resetPoint(resetButton);
+
+export {resetPoint};
