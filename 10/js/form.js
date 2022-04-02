@@ -1,4 +1,5 @@
 import {mainForm} from './page.js';
+import {resetPoint} from './map.js';
 import {sendData} from './api.js';
 import {createErrorMessage, createSuccessMessage} from './util.js';
 
@@ -103,7 +104,8 @@ const resetForm = () => {
   mainForm.reset();
   mapFilter.reset();
   sliderPriceElement.noUiSlider.reset();
-  //как сбросить сообщения валидатора?
+  pristine.reset();
+  resetPoint();
 };
 
 //Отправка формы
@@ -116,32 +118,27 @@ const unblockSubmitButton = () => {
   submitButton.disabled = false;
   submitButton.textContent = 'Опубликовать';
 };
+//форма показывает сообщение об отправке только один раз
+mainForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const isValid = pristine.validate();
+  if (isValid) {
+    blockSubmitButton();
+    sendData(
+      () => {
+        createSuccessMessage();
+        resetForm();
+        unblockSubmitButton();
+      },
+      () => {
+        createErrorMessage('Не удалось отправить форму. Попробуйте ещё раз');
+        unblockSubmitButton();
+      },
+      new FormData(evt.target),
+    );
+  }
+});
 
-const setUserFormSubmit = (onSuccess) => {
-  mainForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    const isValid = pristine.validate();
-    if (isValid) {
-      blockSubmitButton();
-      sendData(
-        () => {
-          onSuccess();
-          unblockSubmitButton();
-          createSuccessMessage();
-        },
-        () => {
-          createErrorMessage('Не удалось отправить форму. Попробуйте ещё раз');
-          unblockSubmitButton();
-        },
-        new FormData(evt.target),
-      );
-      unblockSubmitButton();
-    }
-  });
-};
-
-setUserFormSubmit(resetForm);
 
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();

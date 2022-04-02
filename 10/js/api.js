@@ -1,29 +1,30 @@
 import {createErrorMessage} from './util.js';
 
+const ErrorFormMessage = 'Произошла ошибка загрузки объявлений. Попробуйте ещё раз позже';
+const serverUrl = 'https://25.javascript.pages.academy/keksobooking';
 
 const getData = (onSuccess) => {
-  const ads = [];
-  const offersList = fetch('https://25.javascript.pages.academy/keksobooking/data')
+  const offersList = fetch(`${serverUrl}/data`)
     .then((response) => {
       if (response.ok) {
         response.json()
           .then((offers) => {
             onSuccess(offers);
           });
-        ads.push(offersList);
+        return offersList;
       } else {
-        createErrorMessage('Произошла ошибка загрузки объявлений. Попробуйте ещё раз позже');
+        createErrorMessage(ErrorFormMessage);
       }
     })
     .catch(() => {
-      createErrorMessage('Произошла ошибка загрузки объявлений. Попробуйте ещё раз позже');
+      createErrorMessage(ErrorFormMessage);
     });
 };
 
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://25.javascript.pages.academy/keksobooking',
+    serverUrl,
     {
       method: 'POST',
       body,
