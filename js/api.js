@@ -1,10 +1,10 @@
 import {createErrorMessage} from './util.js';
 
-const ErrorFormMessage = 'Произошла ошибка загрузки объявлений. Попробуйте ещё раз позже';
-const serverUrl = 'https://25.javascript.pages.academy/keksobooking';
+const ERROR_FORM_MESSAGE = 'Произошла ошибка загрузки объявлений. Попробуйте ещё раз позже';
+const SERVER_URL = 'https://25.javascript.pages.academ/keksobooking';
 
 const getData = (onSuccess) => {
-  const offersList = fetch(`${serverUrl}/data`)
+  const offersList = fetch(`${SERVER_URL}/data`)
     .then((response) => {
       if (response.ok) {
         response.json()
@@ -13,18 +13,18 @@ const getData = (onSuccess) => {
           });
         return offersList;
       } else {
-        createErrorMessage(ErrorFormMessage);
+        createErrorMessage(ERROR_FORM_MESSAGE);
       }
     })
     .catch(() => {
-      createErrorMessage(ErrorFormMessage);
+      createErrorMessage(ERROR_FORM_MESSAGE);
     });
 };
 
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    serverUrl,
+    SERVER_URL,
     {
       method: 'POST',
       body,
