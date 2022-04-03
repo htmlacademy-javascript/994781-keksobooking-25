@@ -2,6 +2,7 @@ import {activatePage, mainForm} from './page.js';
 import {createCard} from './add-card.js';
 import {getData} from './api.js';
 
+const OFFERS_COUNT = 10;
 const MarkerLocation = {
   LAT: 35.68172,
   LNG: 139.75392,
@@ -15,9 +16,9 @@ const map = L.map('map-canvas')
     activatePage();
   })
   .setView({
-    lat: 35.68172,
-    lng: 139.75392,
-  }, 12);
+    lat: MarkerLocation.LAT,
+    lng: MarkerLocation.LNG,
+  }, 13);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -37,8 +38,8 @@ const mainPinIcon = L.icon({
 });
 const mainPinMarker = L.marker(
   {
-    lat: 35.681729,
-    lng: 139.753927,
+    lat: MarkerLocation.LAT,
+    lng: MarkerLocation.LNG,
   },
   {
     draggable: true,
@@ -73,9 +74,10 @@ const createMarker = (ad) => {
 };
 
 getData((ads) => {
-  ads.forEach((ad) => {
-    createMarker(ad);
-  });
+  ads.slice(0, OFFERS_COUNT)
+    .forEach((ad) => {
+      createMarker(ad);
+    });
 });
 
 // markerGroup.clearLayers();
