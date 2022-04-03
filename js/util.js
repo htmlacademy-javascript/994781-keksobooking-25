@@ -1,4 +1,8 @@
 const SUCCESS_POPUP_SHOW_TIME = 3000;
+const errorElement = document.querySelector('#error').content.querySelector('.error');
+const errorPopup = errorElement.cloneNode(true);
+const successElement = document.querySelector('#success').content.querySelector('.success');
+const successPopup = successElement.cloneNode(true);
 
 const getRandomIntegerFromRange = (min, max) => {
   if (min < max && min >= 0) {
@@ -29,11 +33,6 @@ const getRandomArray = (array) => {
   }
   return newArray;
 };
-
-const errorElement = document.querySelector('#error').content.querySelector('.error');
-const errorPopup = errorElement.cloneNode(true);
-const successElement = document.querySelector('#success').content.querySelector('.success');
-const successPopup = successElement.cloneNode(true);
 
 
 // не разобралась как сделать универсальный закрыватель попапов, сделала два для каждого
@@ -66,6 +65,7 @@ function closeSuccessModal () {
 //end
 
 const createErrorMessage = (message) => {
+  errorPopup.classList.remove('hidden');
   errorPopup.querySelector('.error__message').textContent = message;
   errorPopup.querySelector('.error__button').textContent = 'ХОРОШО';
   document.addEventListener('click', () => {
@@ -76,6 +76,7 @@ const createErrorMessage = (message) => {
 };
 
 const createSuccessMessage = () => {
+  successPopup.classList.remove('hidden');
   document.addEventListener('click', () => {
     successPopup.classList.add('hidden');
   });

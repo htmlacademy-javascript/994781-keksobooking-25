@@ -6,6 +6,27 @@ import {createErrorMessage, createSuccessMessage} from './util.js';
 const resetButton = document.querySelector('.ad-form__reset');
 const mapFilter = document.querySelector('.map__filters');
 const submitButton = document.querySelector('.ad-form__submit');
+const roomsField = mainForm.querySelector('[name="rooms"]');
+const capacityField = mainForm.querySelector('[name="capacity"]');
+const roomsOption = {
+  '1': ['1'],
+  '2': ['2', '1'],
+  '3': ['3', '2', '1'],
+  '100': ['0'],
+};
+const typeField = mainForm.querySelector('[name="type"]');
+const priceField = mainForm.querySelector('[name="price"]');
+const typeOption = {
+  'bungalow': 0,
+  'flat': 1000,
+  'hotel': 3000,
+  'house': 5000,
+  'palace': 10000,
+};
+const sliderPriceElement = document.querySelector('.ad-form__slider');
+const timeInField = mainForm.querySelector('[name="timein"]');
+const timeOutField = mainForm.querySelector('[name="timeout"]');
+
 
 // Валидация формы
 const pristine = new Pristine(mainForm, {
@@ -15,14 +36,6 @@ const pristine = new Pristine(mainForm, {
 }, false);
 
 // Валидация начений "Количество комнат", "Количество гостей"
-const roomsField = mainForm.querySelector('[name="rooms"]');
-const capacityField = mainForm.querySelector('[name="capacity"]');
-const roomsOption = {
-  '1': ['1'],
-  '2': ['2', '1'],
-  '3': ['3', '2', '1'],
-  '100': ['0'],
-};
 
 function validateCapacity () {
   return roomsOption[roomsField.value].includes(capacityField.value);
@@ -35,16 +48,6 @@ function getCapacityErrorMessage () {
 pristine.addValidator(capacityField, validateCapacity, getCapacityErrorMessage);
 
 //Валидация цены в зависимости от типа жилья
-const typeField = mainForm.querySelector('[name="type"]');
-const priceField = mainForm.querySelector('[name="price"]');
-const typeOption = {
-  'bungalow': 0,
-  'flat': 1000,
-  'hotel': 3000,
-  'house': 5000,
-  'palace': 10000,
-};
-
 typeField.addEventListener('change', () => {
   priceField.placeholder = typeOption[typeField.value];
 });
@@ -59,8 +62,6 @@ function getPriceFieldErrorMessage () {
 pristine.addValidator(priceField, validatePriceField, getPriceFieldErrorMessage);
 
 //слайдер для формы цены
-const sliderPriceElement = document.querySelector('.ad-form__slider');
-
 noUiSlider.create(sliderPriceElement, {
   range: {
     min: 0,
@@ -89,9 +90,6 @@ priceField.addEventListener('change', () => {
 });
 
 // Валидация поля заезда/выезда
-const timeInField = mainForm.querySelector('[name="timein"]');
-const timeOutField = mainForm.querySelector('[name="timeout"]');
-
 timeInField.addEventListener('change', () => {
   timeOutField.value = timeInField.value;
 });
@@ -101,6 +99,7 @@ timeOutField.addEventListener('change', () => {
 
 //сброс формы
 const resetForm = () => {
+  //как очистить поля с фото
   mainForm.reset();
   mapFilter.reset();
   sliderPriceElement.noUiSlider.reset();
@@ -138,7 +137,6 @@ mainForm.addEventListener('submit', (evt) => {
     );
   }
 });
-
 
 resetButton.addEventListener('click', (evt) => {
   evt.preventDefault();
