@@ -1,7 +1,7 @@
 import {createErrorMessage} from './util.js';
 
 const ERROR_FORM_MESSAGE = 'Произошла ошибка загрузки объявлений. Попробуйте ещё раз позже';
-const SERVER_URL = 'https://25.javascript.pages.academ/keksobooking';
+const SERVER_URL = 'https://25.javascript.pages.academy/keksobooking';
 
 const getData = (onSuccess) => {
   const offersList = fetch(`${SERVER_URL}/data`)
