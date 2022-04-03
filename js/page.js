@@ -22,14 +22,14 @@ deactivatePage();
 const activatePage = () => {
   mainForm.classList.remove('ad-form--disabled');
   mainFormElements.forEach((element) => {
-    element.removeAttribute('disabled', 'disabled');
+    element.removeAttribute('disabled');
   });
 
   mapFilters.classList.remove('ad-form--disabled');
   mapFiltersElements.forEach((element) => {
-    element.removeAttribute('disabled', 'disabled');
+    element.removeAttribute('disabled');
   });
-  mapFeaturesElements.removeAttribute('disabled', 'disabled');
+  mapFeaturesElements.removeAttribute('disabled');
 };
 
 export {activatePage, mainForm};

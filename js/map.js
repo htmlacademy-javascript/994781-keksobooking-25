@@ -1,7 +1,11 @@
 import {activatePage, mainForm} from './page.js';
-import {similarOffers} from './data.js';
-import {createOfferElement} from './similar-offers.js';
-import {resetButton} from './form.js';
+import {createCard} from './add-card.js';
+import {getData} from './api.js';
+
+const MarkerLocation = {
+  LAT: 35.68172,
+  LNG: 139.75392,
+};
 
 const markerAddress = mainForm.querySelector('[name="address"]');
 
@@ -52,37 +56,26 @@ const simplePinIcon = L.icon({
   iconAnchor: [20, 40],
 });
 
-const getCardsOffers = () => {
-  const points = [];
-  for (let i = 0; i <= similarOffers.length - 1; i++) {
-    points[i] = similarOffers[i].offer.location;
-    points[i].popup = createOfferElement(similarOffers[i]);
-  }
-  return points;
-};
-
-const pointsOfOffers = getCardsOffers();
-
 const markerGroup = L.layerGroup().addTo(map);
 
-const createMarker = (point) => {
-  const {lat, lng, popup} = point;
+const createMarker = (ad) => {
+  const {location} = ad;
   const marker = L.marker({
-    lat,
-    lng,
+    lat: location.lat,
+    lng: location.lng
   },
   {
-    icon: simplePinIcon,
-  },);
-
+    icon: simplePinIcon
+  });
   marker.addTo(markerGroup)
-    .bindPopup(popup);
-
+    .bindPopup(createCard(ad));
   return marker;
 };
 
-pointsOfOffers.forEach((point) => {
-  createMarker(point);
+getData((ads) => {
+  ads.forEach((ad) => {
+    createMarker(ad);
+  });
 });
 
 // markerGroup.clearLayers();
@@ -92,18 +85,18 @@ mainPinMarker.on('moveend', (evt) => {
   markerAddress.value = `${markerLatLng.lat.toFixed(5)}, ${markerLatLng.lng.toFixed(5)}`;
 });
 
-const MARKER_LAT_LNG  = '35.68172, 139.75392';
-resetButton.addEventListener('click', () => {
+const resetPoint = () => {
+  const {LAT, LNG} = MarkerLocation;
   mainPinMarker.setLatLng({
-    lat: 35.68172,
-    lng: 139.75392,
+    lat: LAT,
+    lng: LNG,
   });
   map.setView({
-    lat: 35.68172,
-    lng: 139.75392,
+    lat: LAT,
+    lng: LNG,
   }, 12);
-  markerAddress.value = MARKER_LAT_LNG;
-});
+  markerAddress.value = `${LAT}, ${LNG}`;
+  map.closePopup();
+};
 
-
-export {centerMarker};
+export {resetPoint};

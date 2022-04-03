@@ -1,4 +1,5 @@
 
 import './form.js';
-import './similar-offers.js';
+import './add-card.js';
 import './map.js';
+
