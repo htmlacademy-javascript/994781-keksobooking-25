@@ -97,6 +97,17 @@ timeOutField.addEventListener('change', () => {
   timeInField.value = timeOutField.value;
 });
 
+const AVATAR_DOFOLT_SRC = 'img/muffin-grey.svg';
+const resetAvatar = () => {
+  document.querySelector('.ad-form-header__preview img').src = AVATAR_DOFOLT_SRC;
+};
+
+//думаю как сбросить фотки если их больше одной, оно работает, но выглядит так, как будто это не верно =)
+const resetPhoto = () => {
+  const photoContainer = document.querySelector('.ad-form__photo-container');
+  // const photoPrev = document.querySelector('.ad-form__upload');
+  photoContainer.innerHTML = '<div class="ad-form__upload"><input type="file" id="images" name="images" class="ad-form__input visually-hidden" accept="image/png, image/jpeg"><label for="images" class="ad-form__drop-zone">Загрузить<br>фото...</label></div><div class="ad-form__photo"></div>';
+};
 //сброс формы
 const resetForm = () => {
   //как очистить поля с фото
@@ -105,6 +116,8 @@ const resetForm = () => {
   sliderPriceElement.noUiSlider.reset();
   pristine.reset();
   resetPoint();
+  resetAvatar();
+  resetPhoto();
 };
 
 //Отправка формы

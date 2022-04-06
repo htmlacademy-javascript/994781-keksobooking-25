@@ -56,4 +56,12 @@ const createSuccessMessage = () => {
   }, SUCCESS_POPUP_SHOW_TIME);
 };
 
-export {createErrorMessage, createSuccessMessage};
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {createErrorMessage, createSuccessMessage, debounce};
