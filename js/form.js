@@ -2,9 +2,10 @@ import {mainForm} from './page.js';
 import {resetPoint} from './map.js';
 import {sendData} from './api.js';
 import {createErrorMessage, createSuccessMessage} from './util.js';
+import {resetAvatar, resetPhotos} from './photo.js';
+import {mapFilterReset} from './filter.js';
 
 const resetButton = document.querySelector('.ad-form__reset');
-const mapFilter = document.querySelector('.map__filters');
 const submitButton = document.querySelector('.ad-form__submit');
 const roomsField = mainForm.querySelector('[name="rooms"]');
 const capacityField = mainForm.querySelector('[name="capacity"]');
@@ -97,27 +98,16 @@ timeOutField.addEventListener('change', () => {
   timeInField.value = timeOutField.value;
 });
 
-const AVATAR_DOFOLT_SRC = 'img/muffin-grey.svg';
-const resetAvatar = () => {
-  document.querySelector('.ad-form-header__preview img').src = AVATAR_DOFOLT_SRC;
-};
 
-//думаю как сбросить фотки если их больше одной, оно работает, но выглядит так, как будто это не верно =)
-const resetPhoto = () => {
-  const photoContainer = document.querySelector('.ad-form__photo-container');
-  // const photoPrev = document.querySelector('.ad-form__upload');
-  photoContainer.innerHTML = '<div class="ad-form__upload"><input type="file" id="images" name="images" class="ad-form__input visually-hidden" accept="image/png, image/jpeg"><label for="images" class="ad-form__drop-zone">Загрузить<br>фото...</label></div><div class="ad-form__photo"></div>';
-};
 //сброс формы
 const resetForm = () => {
-  //как очистить поля с фото
   mainForm.reset();
-  mapFilter.reset();
   sliderPriceElement.noUiSlider.reset();
   pristine.reset();
   resetPoint();
   resetAvatar();
-  resetPhoto();
+  resetPhotos();
+  mapFilterReset();
 };
 
 //Отправка формы
@@ -130,7 +120,6 @@ const unblockSubmitButton = () => {
   submitButton.disabled = false;
   submitButton.textContent = 'Опубликовать';
 };
-//форма показывает сообщение об отправке только один раз
 mainForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
