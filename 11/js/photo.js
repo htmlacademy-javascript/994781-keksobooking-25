@@ -1,34 +1,48 @@
-const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const FILE_TYPES = ['jpeg', 'png'];
+const AVATAR_DEFAULT_SRC = 'img/muffin-grey.svg';
+const avatarChooserElement = document.querySelector('.ad-form__field  input[type=file]');
+const avatarPreviewElement = document.querySelector('.ad-form-header__preview img');
+const photoContainerElement = document.querySelector('.ad-form__photo-container');
+const photoChooserElement = document.querySelector('.ad-form__photo-container  input[type=file]');
+const photoElement = document.querySelector('.ad-form__photo');
 
-const avatarChooser = document.querySelector('.ad-form__field  input[type=file]');
-const avatarPreview = document.querySelector('.ad-form-header__preview img');
-
-avatarChooser.addEventListener('change', () => {
-  const file = avatarChooser.files[0];
+avatarChooserElement.addEventListener('change', () => {
+  const file = avatarChooserElement.files[0];
   const fileName = file.name.toLowerCase();
 
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
 
   if (matches) {
-    avatarPreview.src = URL.createObjectURL(file);
+    avatarPreviewElement.src = URL.createObjectURL(file);
   }
 });
 
-const photoContainer = document.querySelector('.ad-form__photo-container');
-const photoChooser = document.querySelector('.ad-form__photo-container  input[type=file]');
-const photoPrev = document.querySelector('.ad-form__photo');
-
-photoChooser.addEventListener('change', () => {
-  const file = photoChooser.files[0];
+photoChooserElement.addEventListener('change', () => {
+  const file = photoChooserElement.files[0];
   const fileName = file.name.toLowerCase();
   const matches = FILE_TYPES.some((it) => fileName.endsWith(it));
   if (matches) {
-    const photoPrevElemment = photoPrev.cloneNode(true);
-    photoPrev.remove();
+    const photoPreviewElemment = photoElement.cloneNode(true);
+    photoElement.remove();
     const photoPreviewImg = document.createElement('img');
     photoPreviewImg.className = 'ad-form__photo--preview';
-    photoPrevElemment.append(photoPreviewImg);
+    photoPreviewElemment.append(photoPreviewImg);
     photoPreviewImg.src = URL.createObjectURL(file);
-    photoContainer.append(photoPrevElemment);
+    photoContainerElement.append(photoPreviewElemment);
   }
 });
+
+const resetAvatar = () => {
+  avatarPreviewElement.src = AVATAR_DEFAULT_SRC;
+};
+
+const resetPhotos = () => {
+  const photoElements = document.querySelectorAll('.ad-form__photo');
+  Array.from(photoElements).forEach((element) => {
+    element.remove();
+  });
+  const photoPreviewElemment = photoElement.cloneNode(true);
+  photoContainerElement.append(photoPreviewElemment);
+};
+
+export {resetAvatar, resetPhotos};
