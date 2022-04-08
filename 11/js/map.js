@@ -1,16 +1,12 @@
 import {activatePage, mainForm} from './page.js';
 import {createCard} from './add-card.js';
 import {getData} from './api.js';
-import {debounce} from './util.js';
-import {filterGuests, filterRooms, filterPrice, filterType, filterFeatures} from './filter.js';
 
 const OFFERS_COUNT = 10;
-const FILTER_DELAY = 500;
 const MarkerLocation = {
   LAT: 35.68172,
   LNG: 139.75392,
 };
-const filterElement = document.querySelector('.map__filters-container');
 const initialAds = [];
 const markerAddress = mainForm.querySelector('[name="address"]');
 
@@ -77,24 +73,18 @@ const createMarker = (ad) => {
   return marker;
 };
 
-getData((ads) => {
-  initialAds.push(...ads);
+const showMarkers = (ads) => {
   ads
     .slice(0, OFFERS_COUNT)
     .forEach((ad) => {
       createMarker(ad);
     });
-});
+};
 
-filterElement.addEventListener('change', debounce(() => {
-  markerGroup.clearLayers();
-  initialAds
-    .filter((ad) => filterGuests(ad) && filterRooms(ad) && filterPrice(ad) && filterType(ad) && filterFeatures(ad))
-    .slice(0, OFFERS_COUNT)
-    .forEach((ad) => {
-      createMarker(ad);
-    });
-}, FILTER_DELAY));
+getData((ads) => {
+  initialAds.push(...ads);
+  showMarkers(ads);
+});
 
 mainPinMarker.on('moveend', (evt) => {
   const markerLatLng  = evt.target.getLatLng();
@@ -115,4 +105,4 @@ const resetPoint = () => {
   map.closePopup();
 };
 
-export {resetPoint, initialAds, OFFERS_COUNT, createMarker};
+export {resetPoint, initialAds, OFFERS_COUNT, createMarker, markerGroup, showMarkers};

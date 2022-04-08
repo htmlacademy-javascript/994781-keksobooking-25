@@ -1,9 +1,8 @@
-import {mainForm} from './page.js';
-import {resetPoint} from './map.js';
+import {mainForm, mapFilter} from './page.js';
+import {resetPoint, initialAds, showMarkers} from './map.js';
 import {sendData} from './api.js';
 import {createErrorMessage, createSuccessMessage} from './util.js';
 import {resetAvatar, resetPhotos} from './photo.js';
-import {mapFilterReset} from './filter.js';
 
 const resetButton = document.querySelector('.ad-form__reset');
 const submitButton = document.querySelector('.ad-form__submit');
@@ -98,6 +97,10 @@ timeOutField.addEventListener('change', () => {
   timeInField.value = timeOutField.value;
 });
 
+const mapFilterReset = () => {
+  mapFilter.reset();
+  showMarkers(initialAds);
+};
 
 //сброс формы
 const resetForm = () => {
