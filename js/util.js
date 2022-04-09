@@ -6,32 +6,25 @@ const successPopup = successElement.cloneNode(true);
 
 // не разобралась как сделать универсальный закрыватель попапов, сделала два для каждого
 const isEscapeKey = (evt) => evt.key === 'Escape';
-// const isEnterKey = (evt) => evt.key === 'Enter';
+
+const closeModal = (popup, onPopupKeydown) => {
+  popup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupKeydown);
+};
 
 const onPopupEscKeydownError = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeErrorModal();
+    closeModal(errorPopup, onPopupEscKeydownError);
   }
 };
-
-function closeErrorModal () {
-  errorPopup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscKeydownError);
-}
 
 const onPopupEscKeydownSuccess = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeSuccessModal();
+    closeModal(successPopup, onPopupEscKeydownSuccess);
   }
 };
-
-function closeSuccessModal () {
-  successPopup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscKeydownSuccess);
-}
-//end
 
 const createErrorMessage = (message) => {
   errorPopup.classList.remove('hidden');

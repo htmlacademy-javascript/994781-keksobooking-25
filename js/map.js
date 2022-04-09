@@ -2,6 +2,8 @@ import {activatePage, mainForm} from './page.js';
 import {createCard} from './add-card.js';
 import {getData} from './api.js';
 
+const OFFERS_COUNT = 10;
+const initialAds = [];
 const MarkerLocation = {
   LAT: 35.68172,
   LNG: 139.75392,
@@ -29,12 +31,12 @@ L.tileLayer(
 const centerMarker = map.getCenter();
 markerAddress.value = `${centerMarker.lat.toFixed(5)}, ${centerMarker.lng.toFixed(5)}`;
 
-// Создаем точку на карте для передвижения
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
+
 const mainPinMarker = L.marker(
   {
     lat: 35.681729,
@@ -47,8 +49,6 @@ const mainPinMarker = L.marker(
 );
 
 mainPinMarker.addTo(map);
-
-// Создаем точки на карте для похожих объявлений
 
 const simplePinIcon = L.icon({
   iconUrl: './img/pin.svg',
@@ -70,6 +70,15 @@ const createMarker = (ad) => {
   marker.addTo(markerGroup)
     .bindPopup(createCard(ad));
   return marker;
+};
+
+const showMarkers = (ads) => {
+  markerGroup.clearLayers();
+  ads
+    .slice(0, OFFERS_COUNT)
+    .forEach((ad) => {
+      createMarker(ad);
+    });
 };
 
 getData((ads) => {
@@ -99,4 +108,4 @@ const resetPoint = () => {
   map.closePopup();
 };
 
-export {resetPoint};
+export {resetPoint, initialAds, markerGroup, showMarkers};
