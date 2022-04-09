@@ -4,34 +4,26 @@ const errorPopup = errorElement.cloneNode(true);
 const successElement = document.querySelector('#success').content.querySelector('.success');
 const successPopup = successElement.cloneNode(true);
 
-// не разобралась как сделать универсальный закрыватель попапов, сделала два для каждого
 const isEscapeKey = (evt) => evt.key === 'Escape';
-// const isEnterKey = (evt) => evt.key === 'Enter';
+
+function closeModal (popup, onPopupKeydown) {
+  popup.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupKeydown);
+}
 
 const onPopupEscKeydownError = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeErrorModal();
+    closeModal(errorPopup, onPopupEscKeydownError);
   }
 };
-
-function closeErrorModal () {
-  errorPopup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscKeydownError);
-}
 
 const onPopupEscKeydownSuccess = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeSuccessModal();
+    closeModal(successPopup, onPopupEscKeydownSuccess);
   }
 };
-
-function closeSuccessModal () {
-  successPopup.classList.add('hidden');
-  document.removeEventListener('keydown', onPopupEscKeydownSuccess);
-}
-//end
 
 const createErrorMessage = (message) => {
   errorPopup.classList.remove('hidden');
@@ -56,4 +48,12 @@ const createSuccessMessage = () => {
   }, SUCCESS_POPUP_SHOW_TIME);
 };
 
-export {createErrorMessage, createSuccessMessage};
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {createErrorMessage, createSuccessMessage, debounce};

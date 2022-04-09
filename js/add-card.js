@@ -25,8 +25,12 @@ const createCard = ({author, offer}) => {
   };
   fillElementType();
 
-  if (offer.rooms && offer.guests) {
-    cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей.`;
+  if (offer.rooms  && offer.guests >= 0) {
+    if (offer.guests === 0) {
+      cardElement.querySelector('.popup__text--capacity').textContent = 'Выбранный тип жилья не подходит для гостей.';
+    } else {
+      cardElement.querySelector('.popup__text--capacity').textContent = `${offer.rooms} комнаты для ${offer.guests} гостей.`;
+    }
   } else {
     cardElement.querySelector('.popup__text--capacity').remove();
   }

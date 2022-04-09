@@ -1,10 +1,10 @@
-import {mainForm} from './page.js';
-import {resetPoint} from './map.js';
+import {mainForm, mapFilter} from './page.js';
+import {resetPoint, initialAds, showMarkers} from './map.js';
 import {sendData} from './api.js';
 import {createErrorMessage, createSuccessMessage} from './util.js';
+import {resetAvatar, resetPhotos} from './photo.js';
 
 const resetButton = document.querySelector('.ad-form__reset');
-const mapFilter = document.querySelector('.map__filters');
 const submitButton = document.querySelector('.ad-form__submit');
 const roomsField = mainForm.querySelector('[name="rooms"]');
 const capacityField = mainForm.querySelector('[name="capacity"]');
@@ -97,14 +97,20 @@ timeOutField.addEventListener('change', () => {
   timeInField.value = timeOutField.value;
 });
 
+const mapFilterReset = () => {
+  mapFilter.reset();
+  showMarkers(initialAds);
+};
+
 //сброс формы
 const resetForm = () => {
-  //как очистить поля с фото
   mainForm.reset();
-  mapFilter.reset();
   sliderPriceElement.noUiSlider.reset();
   pristine.reset();
   resetPoint();
+  resetAvatar();
+  resetPhotos();
+  mapFilterReset();
 };
 
 //Отправка формы
@@ -117,7 +123,6 @@ const unblockSubmitButton = () => {
   submitButton.disabled = false;
   submitButton.textContent = 'Опубликовать';
 };
-//форма показывает сообщение об отправке только один раз
 mainForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
