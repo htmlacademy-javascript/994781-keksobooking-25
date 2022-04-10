@@ -2,7 +2,20 @@ import {initialAds, showMarkers} from './map.js';
 import {debounce} from './util.js';
 
 const FILTER_DELAY = 500;
-
+const PricesRange = {
+  low: {
+    MIN: 0,
+    MAX: 10000,
+  },
+  middle: {
+    MIN: 10000,
+    MAX: 50000,
+  },
+  high: {
+    MIN: 50000,
+    MAX: 100000,
+  },
+};
 const filterElement = document.querySelector('.map__filters-container');
 const filterTypeElement = document.querySelector('[name="housing-type"]');
 const filterPriceElement = document.querySelector('[name="housing-price"]');
@@ -18,21 +31,6 @@ const filterType = (ad) => {
   return filterTypeValue === ad.offer.type;
 };
 
-
-const PricesRange = {
-  low: {
-    MIN: 0,
-    MAX: 10000,
-  },
-  middle: {
-    MIN: 10000,
-    MAX: 50000,
-  },
-  high: {
-    MIN: 50000,
-    MAX: 100000,
-  },
-};
 const filterPrice = (ad) => {
   const filterPriceValue = filterPriceElement.value;
   if (filterPriceValue === 'any') {

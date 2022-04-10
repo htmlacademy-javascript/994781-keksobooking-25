@@ -3,6 +3,7 @@ import {createCard} from './add-card.js';
 import {getData} from './api.js';
 
 const OFFERS_COUNT = 10;
+const MAP_ZOOM = 13;
 
 const MarkerLocation = {
   LAT: 35.68172,
@@ -19,7 +20,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: MarkerLocation.LAT,
     lng: MarkerLocation.LNG,
-  }, 13);
+  }, MAP_ZOOM);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -100,7 +101,7 @@ const resetPoint = () => {
   map.setView({
     lat: LAT,
     lng: LNG,
-  }, 12);
+  }, MAP_ZOOM);
   markerAddress.value = `${LAT}, ${LNG}`;
   map.closePopup();
 };
