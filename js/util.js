@@ -6,10 +6,10 @@ const successPopup = successElement.cloneNode(true);
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-function closeModal (popup, onPopupKeydown) {
+const closeModal = (popup, onPopupKeydown) => {
   popup.classList.add('hidden');
   document.removeEventListener('keydown', onPopupKeydown);
-}
+};
 
 const onPopupEscKeydownError = (evt) => {
   if (isEscapeKey(evt)) {

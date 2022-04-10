@@ -3,6 +3,8 @@ import {createCard} from './add-card.js';
 import {getData} from './api.js';
 
 const OFFERS_COUNT = 10;
+const MAP_ZOOM = 13;
+
 const MarkerLocation = {
   LAT: 35.68172,
   LNG: 139.75392,
@@ -18,7 +20,7 @@ const map = L.map('map-canvas')
   .setView({
     lat: MarkerLocation.LAT,
     lng: MarkerLocation.LNG,
-  }, 13);
+  }, MAP_ZOOM);
 
 L.tileLayer(
   'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -30,12 +32,12 @@ L.tileLayer(
 const centerMarker = map.getCenter();
 markerAddress.value = `${centerMarker.lat.toFixed(5)}, ${centerMarker.lng.toFixed(5)}`;
 
-// Создаем точку на карте для передвижения
 const mainPinIcon = L.icon({
   iconUrl: './img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
+
 const mainPinMarker = L.marker(
   {
     lat: MarkerLocation.LAT,
@@ -48,8 +50,6 @@ const mainPinMarker = L.marker(
 );
 
 mainPinMarker.addTo(map);
-
-// Создаем точки на карте для похожих объявлений
 
 const simplePinIcon = L.icon({
   iconUrl: './img/pin.svg',
@@ -74,6 +74,7 @@ const createMarker = (ad) => {
 };
 
 const showMarkers = (ads) => {
+  markerGroup.clearLayers();
   ads
     .slice(0, OFFERS_COUNT)
     .forEach((ad) => {
@@ -100,9 +101,9 @@ const resetPoint = () => {
   map.setView({
     lat: LAT,
     lng: LNG,
-  }, 12);
+  }, MAP_ZOOM);
   markerAddress.value = `${LAT}, ${LNG}`;
   map.closePopup();
 };
 
-export {resetPoint, initialAds, OFFERS_COUNT, createMarker, markerGroup, showMarkers};
+export {resetPoint, initialAds, markerGroup, showMarkers};

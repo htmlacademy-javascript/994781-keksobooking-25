@@ -1,5 +1,5 @@
 import {mainForm, mapFilter} from './page.js';
-import {resetPoint, initialAds, showMarkers} from './map.js';
+import {resetPoint, showMarkers, initialAds} from './map.js';
 import {sendData} from './api.js';
 import {createErrorMessage, createSuccessMessage} from './util.js';
 import {resetAvatar, resetPhotos} from './photo.js';
@@ -27,41 +27,6 @@ const sliderPriceElement = document.querySelector('.ad-form__slider');
 const timeInField = mainForm.querySelector('[name="timein"]');
 const timeOutField = mainForm.querySelector('[name="timeout"]');
 
-
-// Валидация формы
-const pristine = new Pristine(mainForm, {
-  classTo: 'ad-form__element',
-  errorTextParent: 'ad-form__element',
-  errorTextClass: 'ad-form__error',
-}, false);
-
-// Валидация начений "Количество комнат", "Количество гостей"
-
-function validateCapacity () {
-  return roomsOption[roomsField.value].includes(capacityField.value);
-}
-
-function getCapacityErrorMessage () {
-  return 'Значение не подходит для выбранного количества комнат';
-}
-
-pristine.addValidator(capacityField, validateCapacity, getCapacityErrorMessage);
-
-//Валидация цены в зависимости от типа жилья
-typeField.addEventListener('change', () => {
-  priceField.placeholder = typeOption[typeField.value];
-});
-
-function validatePriceField (value) {
-  return value >= typeOption[typeField.value];
-}
-
-function getPriceFieldErrorMessage () {
-  return `Для выбранного типа жилья минимальная цена ${typeOption[typeField.value]} руб.`;
-}
-pristine.addValidator(priceField, validatePriceField, getPriceFieldErrorMessage);
-
-//слайдер для формы цены
 noUiSlider.create(sliderPriceElement, {
   range: {
     min: 0,
@@ -89,7 +54,37 @@ priceField.addEventListener('change', () => {
   });
 });
 
-// Валидация поля заезда/выезда
+const pristine = new Pristine(mainForm, {
+  classTo: 'ad-form__element',
+  errorTextParent: 'ad-form__element',
+  errorTextClass: 'ad-form__error',
+}, false);
+
+function validateCapacityField () {
+  return roomsOption[roomsField.value].includes(capacityField.value);
+}
+
+function getCapacityErrorMessage () {
+  return 'Значение не подходит для выбранного количества комнат';
+}
+
+pristine.addValidator(capacityField, validateCapacityField, getCapacityErrorMessage);
+
+
+typeField.addEventListener('change', () => {
+  priceField.placeholder = typeOption[typeField.value];
+});
+
+function validatePriceField (value) {
+  return value >= typeOption[typeField.value];
+}
+
+function getPriceFieldErrorMessage () {
+  return `Для выбранного типа жилья минимальная цена ${typeOption[typeField.value]} руб.`;
+}
+pristine.addValidator(priceField, validatePriceField, getPriceFieldErrorMessage);
+
+
 timeInField.addEventListener('change', () => {
   timeOutField.value = timeInField.value;
 });
@@ -102,7 +97,6 @@ const mapFilterReset = () => {
   showMarkers(initialAds);
 };
 
-//сброс формы
 const resetForm = () => {
   mainForm.reset();
   sliderPriceElement.noUiSlider.reset();
@@ -113,7 +107,6 @@ const resetForm = () => {
   mapFilterReset();
 };
 
-//Отправка формы
 const blockSubmitButton = () => {
   submitButton.disabled = true;
   submitButton.textContent = 'Публикую...';
@@ -123,6 +116,7 @@ const unblockSubmitButton = () => {
   submitButton.disabled = false;
   submitButton.textContent = 'Опубликовать';
 };
+
 mainForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
