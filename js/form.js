@@ -1,21 +1,15 @@
-import {mainForm, mapFilter} from './page.js';
+import {formElement, filterElement} from './page.js';
 import {resetPoint, showMarkers, initialAds} from './map.js';
 import {sendData} from './api.js';
 import {createErrorMessage, createSuccessMessage} from './util.js';
 import {resetAvatar, resetPhotos} from './photo.js';
 
-const resetButton = document.querySelector('.ad-form__reset');
-const submitButton = document.querySelector('.ad-form__submit');
-const roomsField = mainForm.querySelector('[name="rooms"]');
-const capacityField = mainForm.querySelector('[name="capacity"]');
 const roomsOption = {
   '1': ['1'],
   '2': ['2', '1'],
   '3': ['3', '2', '1'],
   '100': ['0'],
 };
-const typeField = mainForm.querySelector('[name="type"]');
-const priceField = mainForm.querySelector('[name="price"]');
 const typeOption = {
   'bungalow': 0,
   'flat': 1000,
@@ -23,16 +17,23 @@ const typeOption = {
   'house': 5000,
   'palace': 10000,
 };
+
+const resetButtonElement = document.querySelector('.ad-form__reset');
+const submitButtonElement = document.querySelector('.ad-form__submit');
+const roomsFieldElement = formElement.querySelector('[name="rooms"]');
+const capacityFieldElement = formElement.querySelector('[name="capacity"]');
+const typeFieldElement = formElement.querySelector('[name="type"]');
+const priceFieldElement = formElement.querySelector('[name="price"]');
 const sliderPriceElement = document.querySelector('.ad-form__slider');
-const timeInField = mainForm.querySelector('[name="timein"]');
-const timeOutField = mainForm.querySelector('[name="timeout"]');
+const timeInFieldElement = formElement.querySelector('[name="timein"]');
+const timeOutFieldElement = formElement.querySelector('[name="timeout"]');
 
 noUiSlider.create(sliderPriceElement, {
   range: {
     min: 0,
     max: 100000,
   },
-  start: typeOption[typeField.value],
+  start: typeOption[typeFieldElement.value],
   step: 100,
   connect: 'lower',
   format: {
@@ -45,60 +46,53 @@ noUiSlider.create(sliderPriceElement, {
   },
 });
 sliderPriceElement.noUiSlider.on('slide', () => {
-  priceField.value = sliderPriceElement.noUiSlider.get();
+  priceFieldElement.value = sliderPriceElement.noUiSlider.get();
 });
 
-priceField.addEventListener('change', () => {
+priceFieldElement.addEventListener('change', () => {
   sliderPriceElement.noUiSlider.updateOptions({
-    start: priceField.value,
+    start: priceFieldElement.value,
   });
 });
 
-const pristine = new Pristine(mainForm, {
+const pristine = new Pristine(formElement, {
   classTo: 'ad-form__element',
   errorTextParent: 'ad-form__element',
   errorTextClass: 'ad-form__error',
 }, false);
 
-function validateCapacityField () {
-  return roomsOption[roomsField.value].includes(capacityField.value);
-}
+const validateCapacityField = () => roomsOption[roomsFieldElement.value].includes(capacityFieldElement.value);
 
-function getCapacityErrorMessage () {
-  return 'Значение не подходит для выбранного количества комнат';
-}
+const getCapacityErrorMessage = () => 'Значение не подходит для выбранного количества комнат';
 
-pristine.addValidator(capacityField, validateCapacityField, getCapacityErrorMessage);
+pristine.addValidator(capacityFieldElement, validateCapacityField, getCapacityErrorMessage);
 
 
-typeField.addEventListener('change', () => {
-  priceField.placeholder = typeOption[typeField.value];
+typeFieldElement.addEventListener('change', () => {
+  priceFieldElement.placeholder = typeOption[typeFieldElement.value];
 });
 
-function validatePriceField (value) {
-  return value >= typeOption[typeField.value];
-}
+const validatePriceField = (value) => value >= typeOption[typeFieldElement.value];
 
-function getPriceFieldErrorMessage () {
-  return `Для выбранного типа жилья минимальная цена ${typeOption[typeField.value]} руб.`;
-}
-pristine.addValidator(priceField, validatePriceField, getPriceFieldErrorMessage);
+const getPriceFieldErrorMessage = () => `Для выбранного типа жилья минимальная цена ${typeOption[typeFieldElement.value]} руб.`;
+
+pristine.addValidator(priceFieldElement, validatePriceField, getPriceFieldErrorMessage);
 
 
-timeInField.addEventListener('change', () => {
-  timeOutField.value = timeInField.value;
+timeInFieldElement.addEventListener('change', () => {
+  timeOutFieldElement.value = timeInFieldElement.value;
 });
-timeOutField.addEventListener('change', () => {
-  timeInField.value = timeOutField.value;
+timeOutFieldElement.addEventListener('change', () => {
+  timeInFieldElement.value = timeOutFieldElement.value;
 });
 
 const mapFilterReset = () => {
-  mapFilter.reset();
+  filterElement.reset();
   showMarkers(initialAds);
 };
 
 const resetForm = () => {
-  mainForm.reset();
+  formElement.reset();
   sliderPriceElement.noUiSlider.reset();
   pristine.reset();
   resetPoint();
@@ -108,16 +102,16 @@ const resetForm = () => {
 };
 
 const blockSubmitButton = () => {
-  submitButton.disabled = true;
-  submitButton.textContent = 'Публикую...';
+  submitButtonElement.disabled = true;
+  submitButtonElement.textContent = 'Публикую...';
 };
 
 const unblockSubmitButton = () => {
-  submitButton.disabled = false;
-  submitButton.textContent = 'Опубликовать';
+  submitButtonElement.disabled = false;
+  submitButtonElement.textContent = 'Опубликовать';
 };
 
-mainForm.addEventListener('submit', (evt) => {
+formElement.addEventListener('submit', (evt) => {
   evt.preventDefault();
   const isValid = pristine.validate();
   if (isValid) {
@@ -137,9 +131,9 @@ mainForm.addEventListener('submit', (evt) => {
   }
 });
 
-resetButton.addEventListener('click', (evt) => {
+resetButtonElement.addEventListener('click', (evt) => {
   evt.preventDefault();
   resetForm();
 });
 
-export {resetButton, submitButton};
+export {resetButtonElement, submitButtonElement};

@@ -1,35 +1,35 @@
-const mainForm = document.querySelector('.ad-form');
-const mainFormElements = mainForm.querySelectorAll('fieldset');
-const mapFilter = document.querySelector('.map__filters');
-const mapFilterElements = mapFilter.querySelectorAll('.map__filter');
-const mapFeaturesElements = mapFilter.querySelector('.map__features');
+const formElement = document.querySelector('.ad-form');
+const formElements = formElement.querySelectorAll('fieldset');
+const filterElement = document.querySelector('.map__filters');
+const filterElements = filterElement.querySelectorAll('.map__filter');
+const FeaturesElements = filterElement.querySelector('.map__features');
 
 
 const deactivatePage = () => {
-  mainForm.classList.add('ad-form--disabled');
-  mainFormElements.forEach((element) => {
+  formElement.classList.add('ad-form--disabled');
+  formElements.forEach((element) => {
     element.setAttribute('disabled', 'disabled');
   });
 
-  mapFilter.classList.add('ad-form--disabled');
-  mapFilterElements.forEach((element) => {
+  filterElement.classList.add('ad-form--disabled');
+  filterElements.forEach((element) => {
     element.setAttribute('disabled', 'disabled');
   });
-  mapFeaturesElements.setAttribute('disabled', 'disabled');
+  FeaturesElements.setAttribute('disabled', 'disabled');
 };
 deactivatePage();
 
 const activatePage = () => {
-  mainForm.classList.remove('ad-form--disabled');
-  mainFormElements.forEach((element) => {
+  formElement.classList.remove('ad-form--disabled');
+  formElements.forEach((element) => {
     element.removeAttribute('disabled');
   });
 
-  mapFilter.classList.remove('ad-form--disabled');
-  mapFilterElements.forEach((element) => {
+  filterElement.classList.remove('ad-form--disabled');
+  filterElements.forEach((element) => {
     element.removeAttribute('disabled');
   });
-  mapFeaturesElements.removeAttribute('disabled');
+  FeaturesElements.removeAttribute('disabled');
 };
 
-export {activatePage, mainForm, mapFilter};
+export {activatePage, formElement, filterElement};

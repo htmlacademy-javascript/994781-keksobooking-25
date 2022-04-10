@@ -1,16 +1,18 @@
-import {activatePage, mainForm} from './page.js';
-import {createCard} from './add-card.js';
+import {activatePage, formElement} from './page.js';
+import {createCard} from './card.js';
 import {getData} from './api.js';
+import {createErrorMessage} from './util.js';
 
 const OFFERS_COUNT = 10;
 const MAP_ZOOM = 13;
+const ERROR_FORM_MESSAGE = 'Произошла ошибка загрузки объявлений. Попробуйте ещё раз позже';
 
 const MarkerLocation = {
   LAT: 35.68172,
   LNG: 139.75392,
 };
 const initialAds = [];
-const markerAddress = mainForm.querySelector('[name="address"]');
+const markerAddress = formElement.querySelector('[name="address"]');
 
 
 const map = L.map('map-canvas')
@@ -85,6 +87,8 @@ const showMarkers = (ads) => {
 getData((ads) => {
   initialAds.push(...ads);
   showMarkers(ads);
+}, () => {
+  createErrorMessage(ERROR_FORM_MESSAGE);
 });
 
 mainPinMarker.on('moveend', (evt) => {
