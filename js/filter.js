@@ -18,6 +18,7 @@ const filterType = (ad) => {
   return filterTypeValue === ad.offer.type;
 };
 
+
 const PricesRange = {
   low: {
     MIN: 0,

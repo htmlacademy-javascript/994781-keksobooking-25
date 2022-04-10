@@ -4,7 +4,6 @@ const errorPopup = errorElement.cloneNode(true);
 const successElement = document.querySelector('#success').content.querySelector('.success');
 const successPopup = successElement.cloneNode(true);
 
-// не разобралась как сделать универсальный закрыватель попапов, сделала два для каждого
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const closeModal = (popup, onPopupKeydown) => {
@@ -49,4 +48,12 @@ const createSuccessMessage = () => {
   }, SUCCESS_POPUP_SHOW_TIME);
 };
 
-export {createErrorMessage, createSuccessMessage};
+const debounce = (callback, timeoutDelay) => {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};
+
+export {createErrorMessage, createSuccessMessage, debounce};

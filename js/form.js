@@ -1,10 +1,10 @@
-import {mainForm} from './page.js';
+import {mainForm, mapFilter} from './page.js';
 import {resetPoint, showMarkers, initialAds} from './map.js';
 import {sendData} from './api.js';
 import {createErrorMessage, createSuccessMessage} from './util.js';
+import {resetAvatar, resetPhotos} from './photo.js';
 
 const resetButton = document.querySelector('.ad-form__reset');
-const mapFilter = document.querySelector('.map__filters');
 const submitButton = document.querySelector('.ad-form__submit');
 const roomsField = mainForm.querySelector('[name="rooms"]');
 const capacityField = mainForm.querySelector('[name="capacity"]');
@@ -92,19 +92,19 @@ timeOutField.addEventListener('change', () => {
   timeInField.value = timeOutField.value;
 });
 
-
 const mapFilterReset = () => {
   mapFilter.reset();
   showMarkers(initialAds);
 };
 
 const resetForm = () => {
-  //как очистить поля с фото
   mainForm.reset();
-  mapFilterReset();
   sliderPriceElement.noUiSlider.reset();
   pristine.reset();
   resetPoint();
+  resetAvatar();
+  resetPhotos();
+  mapFilterReset();
 };
 
 const blockSubmitButton = () => {
