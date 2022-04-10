@@ -1,9 +1,6 @@
-import {createErrorMessage} from './util.js';
-
-const ERROR_FORM_MESSAGE = 'Произошла ошибка загрузки объявлений. Попробуйте ещё раз позже';
 const SERVER_URL = 'https://25.javascript.pages.academy/keksobooking';
 
-const getData = (onSuccess) => {
+const getData = (onSuccess, onFail) => {
   const offersList = fetch(`${SERVER_URL}/data`)
     .then((response) => {
       if (response.ok) {
@@ -13,11 +10,11 @@ const getData = (onSuccess) => {
           });
         return offersList;
       } else {
-        createErrorMessage(ERROR_FORM_MESSAGE);
+        onFail();
       }
     })
     .catch(() => {
-      createErrorMessage(ERROR_FORM_MESSAGE);
+      onFail();
     });
 };
 

@@ -1,8 +1,7 @@
-const SUCCESS_POPUP_SHOW_TIME = 3000;
-const errorElement = document.querySelector('#error').content.querySelector('.error');
-const errorPopup = errorElement.cloneNode(true);
-const successElement = document.querySelector('#success').content.querySelector('.success');
-const successPopup = successElement.cloneNode(true);
+const errorTemplate = document.querySelector('#error').content.querySelector('.error');
+const errorElement = errorTemplate.cloneNode(true);
+const successTemplate = document.querySelector('#success').content.querySelector('.success');
+const successElement = successTemplate.cloneNode(true);
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
@@ -14,38 +13,38 @@ const closeModal = (popup, onPopupKeydown) => {
 const onPopupEscKeydownError = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeModal(errorPopup, onPopupEscKeydownError);
+    closeModal(errorElement, onPopupEscKeydownError);
   }
 };
 
 const onPopupEscKeydownSuccess = (evt) => {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeModal(successPopup, onPopupEscKeydownSuccess);
+    closeModal(successElement, onPopupEscKeydownSuccess);
   }
 };
 
 const createErrorMessage = (message) => {
-  errorPopup.classList.remove('hidden');
-  errorPopup.querySelector('.error__message').textContent = message;
-  errorPopup.querySelector('.error__button').textContent = 'ХОРОШО';
+  errorElement.classList.remove('hidden');
+  errorElement.querySelector('.error__message').textContent = message;
+  errorElement.querySelector('.error__button').textContent = 'ХОРОШО';
   document.addEventListener('click', () => {
-    errorPopup.classList.add('hidden');
+    errorElement.classList.add('hidden');
   });
   document.addEventListener('keydown', onPopupEscKeydownError);
-  document.body.append(errorPopup);
+  document.body.append(errorElement);
 };
 
 const createSuccessMessage = () => {
-  successPopup.classList.remove('hidden');
+  successElement.classList.remove('hidden');
   document.addEventListener('click', () => {
-    successPopup.classList.add('hidden');
+    successElement.classList.add('hidden');
   });
   document.addEventListener('keydown', onPopupEscKeydownSuccess);
-  document.body.append(successPopup);
+  document.body.append(successElement);
   setTimeout(() => {
-    successPopup.classList.add('hidden');
-  }, SUCCESS_POPUP_SHOW_TIME);
+    successElement.classList.add('hidden');
+  });
 };
 
 const debounce = (callback, timeoutDelay) => {
