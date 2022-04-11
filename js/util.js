@@ -42,9 +42,6 @@ const createSuccessMessage = () => {
   });
   document.addEventListener('keydown', onPopupEscKeydownSuccess);
   document.body.append(successElement);
-  setTimeout(() => {
-    successElement.classList.add('hidden');
-  });
 };
 
 const debounce = (callback, timeoutDelay) => {
