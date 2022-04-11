@@ -77,11 +77,10 @@ const createMarker = (ad) => {
 
 const showMarkers = (ads) => {
   markerGroup.clearLayers();
-  ads
-    .slice(0, OFFERS_COUNT)
-    .forEach((ad) => {
-      createMarker(ad);
-    });
+  const sliceAds = ads.slice(0, OFFERS_COUNT);
+  for (let i = 0; i < sliceAds.length; i++) {
+    createMarker(sliceAds[i]);
+  }
 };
 
 getData((ads) => {
