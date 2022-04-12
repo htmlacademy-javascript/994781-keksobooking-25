@@ -64,8 +64,9 @@ filterElement.addEventListener('change', debounce(() => {
   const filteredAds =  [];
 
   for (let i = 0; i < initialAds.length; i++) {
-    if (filterGuests(initialAds[i]) && filterRooms(initialAds[i]) && filterPrice(initialAds[i]) && filterType(initialAds[i]) && filterFeatures(initialAds[i])) {
-      filteredAds.push(initialAds[i]);
+    const ad = initialAds[i];
+    if (filterGuests(ad) && filterRooms(ad) && filterPrice(ad) && filterType(ad) && filterFeatures(ad)) {
+      filteredAds.push(ad);
     }
     if (filteredAds.length === OFFERS_COUNT) {
       break;
