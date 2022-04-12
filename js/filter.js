@@ -61,7 +61,15 @@ const filterFeatures = (ad) => {
 };
 
 filterElement.addEventListener('change', debounce(() => {
-  const filteredAds =  initialAds
-    .filter((ad) => filterGuests(ad) && filterRooms(ad) && filterPrice(ad) && filterType(ad) && filterFeatures(ad));
+  const filteredAds =  [];
+
+  for (let i = 0; i < initialAds.length; i++) {
+    if (filterGuests(initialAds[i]) && filterRooms(initialAds[i]) && filterPrice(initialAds[i]) && filterType(initialAds[i]) && filterFeatures(initialAds[i])) {
+      filteredAds.push(initialAds[i]);
+    }
+    if (filteredAds.length === 10) {
+      break;
+    }
+  }
   showMarkers(filteredAds);
 }, FILTER_DELAY));
