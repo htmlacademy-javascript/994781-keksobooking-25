@@ -110,4 +110,4 @@ const resetPoint = () => {
   map.closePopup();
 };
 
-export {resetPoint, initialAds, markerGroup, showMarkers};
+export {resetPoint, initialAds, markerGroup, OFFERS_COUNT, showMarkers};

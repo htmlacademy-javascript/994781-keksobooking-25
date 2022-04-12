@@ -1,4 +1,4 @@
-import {initialAds, showMarkers} from './map.js';
+import {initialAds, showMarkers, OFFERS_COUNT} from './map.js';
 import {debounce} from './util.js';
 
 const FILTER_DELAY = 500;
@@ -61,7 +61,16 @@ const filterFeatures = (ad) => {
 };
 
 filterElement.addEventListener('change', debounce(() => {
-  const filteredAds =  initialAds
-    .filter((ad) => filterGuests(ad) && filterRooms(ad) && filterPrice(ad) && filterType(ad) && filterFeatures(ad));
+  const filteredAds =  [];
+
+  for (let i = 0; i < initialAds.length; i++) {
+    const ad = initialAds[i];
+    if (filterGuests(ad) && filterRooms(ad) && filterPrice(ad) && filterType(ad) && filterFeatures(ad)) {
+      filteredAds.push(ad);
+    }
+    if (filteredAds.length === OFFERS_COUNT) {
+      break;
+    }
+  }
   showMarkers(filteredAds);
 }, FILTER_DELAY));
