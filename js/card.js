@@ -14,18 +14,18 @@ const fillElementData = (element, value, className, unit = '') => {
     element.querySelector(className).remove();
   }
 };
-const fillElementType = (element, value, className) => {
-  if (value) {
-    element.querySelector(className).textContent = nameOfType[value];
+const fillElementType = (element, type, className) => {
+  if (type) {
+    element.querySelector(className).textContent = nameOfType[type];
   } else {
     element.querySelector(className).remove();
   }
 };
 
-const fillElementCapacity = (element, firstValue, secondValue, className) => {
-  if (firstValue && secondValue >= 0) {
-    let message = `${firstValue} комнаты для ${secondValue} гостей.`;
-    if (secondValue === 0) {
+const fillElementCapacity = (element, rooms, guests, className) => {
+  if (rooms && guests >= 0) {
+    let message = `${rooms} комнаты для ${guests} гостей.`;
+    if (guests === 0) {
       message = 'Не для гостей.';
     }
 
@@ -35,19 +35,19 @@ const fillElementCapacity = (element, firstValue, secondValue, className) => {
   }
 };
 
-const fillElementTime = (element, firstValue, secondValue, className) => {
-  if (firstValue && secondValue){
-    element.querySelector(className).textContent = `Заезд после ${firstValue}, выезд до ${secondValue}.`;
+const fillElementTime = (element, checkin, checkout, className) => {
+  if (checkin && checkout){
+    element.querySelector(className).textContent = `Заезд после ${checkin}, выезд до ${checkout}.`;
   } else {
     element.querySelector('className').remove();
   }
 };
 
-const fillFeaturesList = (element, value, className) => {
+const fillFeaturesList = (element, features, className) => {
   const featuresContainerElement = element.querySelector(className);
   const featuresListFragment = document.createDocumentFragment();
-  if (value) {
-    value.forEach((offerFeatures) => {
+  if (features) {
+    features.forEach((offerFeatures) => {
       const featureListItem = featuresContainerElement.querySelector(`.popup__feature--${offerFeatures}`);
       if (featureListItem) {
         featuresListFragment.append(featureListItem);
@@ -60,22 +60,22 @@ const fillFeaturesList = (element, value, className) => {
   }
 };
 
-const fillElementAvatar = (element, value, className) => {
-  if (value) {
-    element.querySelector(className).src = value;
+const fillElementAvatar = (element, avatar, className) => {
+  if (avatar) {
+    element.querySelector(className).src = avatar;
   } else {
     element.querySelector(className).remove();
   }
 };
-const fillElementPhotos = (element, value, className) => {
+const fillElementPhotos = (element, photos, className) => {
   const popupPhotoContainerElement = element.querySelector(className);
   const popupPhotoFragment= document.createDocumentFragment();
-  if (value) {
-    value.forEach((offerPhotos) => {
+  if (photos) {
+    photos.forEach((offerPhotos) => {
       const offerContainer = popupPhotoContainerElement.cloneNode(true);
       offerContainer.querySelector('.popup__photo').src = offerPhotos;
       const popupPhotoItem = offerContainer.querySelector('.popup__photo');
-      if (value) {
+      if (photos) {
         popupPhotoFragment.append(popupPhotoItem);
       }
     });
